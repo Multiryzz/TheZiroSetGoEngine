@@ -15,9 +15,28 @@
 # Copyright:   (c) Multiryzz 2020-2021
 # Licence:     GNU General Public License v3.0
 #-------------------------------------------------------------------------------
-
 import sys
-from DIC import dirset
 
+from threading import Thread
+from DIC import dirset
+Debugging = True
 dirset()
+from OpenGLPiplineOne import maintread
+from Debugging import text, activateDebug
+
+def test(test):
+    print(test)
+
+
+
+
+activateDebug(Debugging)
+text("yeet")
+
+
+if __name__ == "__main__":
+
+
+    thread = Thread(target = maintread, args = ())
+    thread.start()
 

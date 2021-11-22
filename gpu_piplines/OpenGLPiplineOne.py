@@ -8,68 +8,61 @@
 # Copyright:   (c) Multiryzz 2020-2021
 # Licence:     GNU General Public License v3.0
 #-------------------------------------------------------------------------------
+import sys
+sys.path.append('../other/')
+sys.path.append('../test_modules/')
 
+from threading import Thread
 import glfw
 import OpenGL.GL.shaders
 import numpy
 from OpenGL.GL import *
-from Objects import Form
+#TODO import Objects from other.Objects import Form
 #TODO Bugfixing from FixedUpdate import SlowFixedUpdate
 import time
 import pyrr
 import sys
 
+
 a = 0
 b = 0
 c = 0
 d = 0
-RunTime = 0
+
+isOpen = True
 allow = False
-def stableLoop(runTime, precision):
-    global a
-    global b
-    global c
-    global d
 
-    try:
-        if int(precision) <= 3:
-            #TODO: make some fancy function stuff
-            print("bb")
-        else:
-            print("please use an Int, that is smaller then 4...")
-            exit()
-    except ValueError:
-        try:
-            int(precision)
-        except ValueError:
-            print("you need to use an int for precision")
-            exit()
-    if precision > 3:
-        exit()
-    #50x per second
+def runtimesetter(runtime):
+    Runtime = runtime
+    return Runtime
+timer = 0
 
+def stableLoop():
+    time.sleep(0.5)
+    while not isOpen:
+        time.sleep(0.01)
+        global timer
+        zeit = timer
+        global b
+        global c
 
-    if (((runTime - c) > 0.02) ):
-        c = runTime
-    # DEBUG ONLY it makes the program super slow because of print
-        #print(format((runTime - b), ".2f"))
+        #50x per second
+        if (((zeit - c) > 1) ):
+            c = zeit
+            print("yeet!")
+        # DEBUG ONLY it makes the program super slow because of print
+            #print(format((zeit - b), ".2f"))
 
-    #10x per second
-    if((runTime - d) > 0.1):
-        d = runTime
-        #every second
+        elif((zeit - b) > 0.01):
+            print("not yeet")
+            #print("1 Second Passed...")
+            b = zeit
+            #num = a/1
+            #fps = "fps: " + str(num)+ "\n"
 
-
-    if((runTime - b) > 1):
-        print("1 Second Passed...")
-        b = runTime
-        num = a/1
-        fps = "fps: " + str(num)+ "\n"
-        sys.stdout.write(fps)
-
-def main():
-    triangle = Form("Triangle", 40, 40, 2, 2)
-    print(triangle.name)
+def maintread():
+    #TODO Object class triangle = Form("Triangle", 40, 40, 2, 2)
+    #print(triangle.name)
     # setting up basic things for glfw
     if not glfw.init():
         return
@@ -148,8 +141,9 @@ def main():
 
     glUseProgram(shader)
 
-
     global RunTime
+    global isOpen
+    isOpen = glfw.window_should_close(window)
     #main openGL loop
     while not glfw.window_should_close(window):
         glClearColor(255, 255, 000, 1.0)
@@ -158,17 +152,18 @@ def main():
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         rot_x = pyrr.Matrix44.from_x_rotation(0.2 * glfw.get_time())
         rot_y = pyrr.Matrix44.from_y_rotation(0.4 * glfw.get_time())
-        stableLoop(glfw.get_time(), 3)
-        RunTime = glfw.get_time()
         transfromLoc = glGetUniformLocation(shader, "transform") #goes to the shader program and get transform from it
         glUniformMatrix4fv(transfromLoc, 1, GL_FALSE, rot_x * rot_y)#makes fancy math stuff
-
+        global timer
+        timer = (runtimesetter(glfw.get_time()))
 
         glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, None)
         glfw.swap_buffers(window)
 
 
     glfw.terminate()
-
+thread = Thread(target = stableLoop)
+display = Thread(target = maintread)
 if __name__ == "__main__":
-    main()
+    display.start()
+    thread.start()
