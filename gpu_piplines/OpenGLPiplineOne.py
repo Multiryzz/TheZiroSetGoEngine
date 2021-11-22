@@ -1,12 +1,12 @@
 #-------------------------------------------------------------------------------
 # Name:        OpenGL loop
-# Purpose:
+# Purpose:     My First ever RenderPipeline, for 3D Grafics
 #
 # Author:      Siro
 #
 # Created:     18.11.2021
 # Copyright:   (c) Multiryzz 2020-2021
-# Licence:     All rights reserved
+# Licence:     GNU General Public License v3.0
 #-------------------------------------------------------------------------------
 
 import glfw
