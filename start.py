@@ -21,7 +21,7 @@ from threading import Thread
 from DIC import dirset
 Debugging = True
 dirset()
-from OpenGLPiplineOne import maintread
+from OpenGLPiplineOne import startdisplay
 from Debugging import text, activateDebug
 
 def test(test):
@@ -37,6 +37,7 @@ text("yeet")
 if __name__ == "__main__":
 
 
-    thread = Thread(target = maintread, args = ())
+    thread = Thread(target = startdisplay, args = ())
     thread.start()
+    print("everything is working omg omg uwuwuwuwuwuwuuw")
 

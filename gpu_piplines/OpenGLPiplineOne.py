@@ -17,8 +17,7 @@ import glfw
 import OpenGL.GL.shaders
 import numpy
 from OpenGL.GL import *
-#TODO import Objects from other.Objects import Form
-#TODO Bugfixing from FixedUpdate import SlowFixedUpdate
+#TODO make loop better lolol
 import time
 import pyrr
 import sys
@@ -164,6 +163,11 @@ def maintread():
     glfw.terminate()
 thread = Thread(target = stableLoop)
 display = Thread(target = maintread)
+
+def startdisplay():
+    display.start()
+    thread.start()
+
 if __name__ == "__main__":
     display.start()
     thread.start()
