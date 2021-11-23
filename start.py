@@ -13,7 +13,7 @@
 #
 # Created:     22.11.2021
 # Copyright:   (c) Multiryzz 2020-2021
-# Licence:     GNU General Public License v3.0
+# Licence:     GNU General Public License v3.0 uwu
 #-------------------------------------------------------------------------------
 import sys
 
