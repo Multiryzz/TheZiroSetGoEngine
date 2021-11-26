@@ -13,6 +13,7 @@ sys.path.append('../other/')
 sys.path.append('../test_modules/')
 
 from threading import Thread
+from SDDM import fpscounter
 import glfw
 import OpenGL.GL.shaders
 import numpy
@@ -35,27 +36,27 @@ def runtimesetter(runtime):
     Runtime = runtime
     return Runtime
 timer = 0
+frame = 0
 
 def stableLoop():
-    time.sleep(0.5)
-    while not isOpen:
-        time.sleep(0.01)
+    while True:
+        time.sleep(0.02)
+        global frame
         global timer
         zeit = timer
         global b
         global c
-
         #50x per second
         if (((zeit - c) > 1) ):
-            c = zeit
-            print("yeet!")
-        # DEBUG ONLY it makes the program super slow because of print
-            #print(format((zeit - b), ".2f"))
+            fpscounter(timer, frame)
 
-        elif((zeit - b) > 0.01):
-            print("not yeet")
+            c = zeit
+            print("loop executed")
+        elif((zeit - b) > 0.2):
+            pass
+            #print("not yeet")
             #print("1 Second Passed...")
-            b = zeit
+            #b = zeit
             #num = a/1
             #fps = "fps: " + str(num)+ "\n"
 
@@ -145,6 +146,7 @@ def maintread():
     isOpen = glfw.window_should_close(window)
     #main openGL loop
     while not glfw.window_should_close(window):
+        time.sleep(0.1)
         glClearColor(255, 255, 000, 1.0)
         glEnable(GL_DEPTH_TEST)
         glfw.poll_events()
@@ -156,9 +158,11 @@ def maintread():
         global timer
         timer = (runtimesetter(glfw.get_time()))
 
+
         glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, None)
         glfw.swap_buffers(window)
-
+        global frame
+        frame = frame + 1
 
     glfw.terminate()
 thread = Thread(target = stableLoop)
